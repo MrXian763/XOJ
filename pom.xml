@@ -5,8 +5,18 @@
     <groupId>com.zicai</groupId>
     <artifactId>xoj-backend-microservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>xoj-backend-microservice</name>
     <description>OnlineJudge Project</description>
+    <modules>
+        <module>xoj-backend-common</module>
+        <module>xoj-backend-model</module>
+        <module>xoj-backend-service-client</module>
+        <module>xoj-backend-user-service</module>
+        <module>xoj-backend-question-service</module>
+        <module>xoj-backend-judge-service</module>
+        <module>xoj-backend-gateway</module>
+    </modules>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
