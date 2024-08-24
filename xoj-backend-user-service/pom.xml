@@ -17,6 +17,11 @@
     <dependencies>
         <dependency>
             <groupId>com.zicai</groupId>
+            <artifactId>xoj-backend-service-client</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zicai</groupId>
             <artifactId>xoj-backend-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
