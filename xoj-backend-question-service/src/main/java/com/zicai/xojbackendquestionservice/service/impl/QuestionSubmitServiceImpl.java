@@ -19,8 +19,8 @@ import com.zicai.xojbackendmodel.model.vo.QuestionSubmitVO;
 import com.zicai.xojbackendquestionservice.mapper.QuestionSubmitMapper;
 import com.zicai.xojbackendquestionservice.service.QuestionService;
 import com.zicai.xojbackendquestionservice.service.QuestionSubmitService;
-import com.zicai.xojbackendserviceclient.service.JudgeService;
-import com.zicai.xojbackendserviceclient.service.UserService;
+import com.zicai.xojbackendserviceclient.service.JudgeFeignClient;
+import com.zicai.xojbackendserviceclient.service.UserFeignClient;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Lazy;
@@ -45,11 +45,11 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     private QuestionService questionService;
 
     @Resource
-    private UserService userService;
+    private UserFeignClient userFeignClient;
 
     @Resource
     @Lazy
-    private JudgeService judgeService;
+    private JudgeFeignClient judgeFeignClient;
 
 
     @Override
@@ -85,7 +85,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         Long questionSubmitId = questionSubmit.getId();
         // 异步执行判题服务
         CompletableFuture.runAsync(() -> {
-            judgeService.doJudge(questionSubmitId);
+            judgeFeignClient.doJudge(questionSubmitId);
         });
         return questionSubmit.getId();
     }
@@ -119,7 +119,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         QuestionSubmitVO questionSubmitVO = QuestionSubmitVO.objToVo(questionSubmit);
         // 脱敏，仅本人和管理员能看到提交的代码
         Long userId = loginUser.getId();
-        if (!Objects.equals(userId, questionSubmitVO.getUserId()) && !userService.isAdmin(loginUser)) {
+        if (!Objects.equals(userId, questionSubmitVO.getUserId()) && !userFeignClient.isAdmin(loginUser)) {
             questionSubmitVO.setCode(null);
         }
         return questionSubmitVO;

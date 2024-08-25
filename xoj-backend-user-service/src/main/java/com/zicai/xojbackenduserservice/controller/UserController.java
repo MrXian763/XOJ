@@ -30,7 +30,7 @@ import static com.zicai.xojbackenduserservice.service.impl.UserServiceImpl.SALT;
  * 用户接口
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/")
 @Slf4j
 public class UserController {
 

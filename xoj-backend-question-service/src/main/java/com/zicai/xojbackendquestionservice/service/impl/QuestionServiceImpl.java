@@ -16,7 +16,7 @@ import com.zicai.xojbackendmodel.model.vo.QuestionVO;
 import com.zicai.xojbackendmodel.model.vo.UserVO;
 import com.zicai.xojbackendquestionservice.mapper.QuestionMapper;
 import com.zicai.xojbackendquestionservice.service.QuestionService;
-import com.zicai.xojbackendserviceclient.service.UserService;
+import com.zicai.xojbackendserviceclient.service.UserFeignClient;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -36,13 +36,15 @@ import java.util.stream.Collectors;
 @Service
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
         implements QuestionService {
+
     @Resource
-    private UserService userService;
+    private UserFeignClient userFeignClient;
 
     /**
      * 校验题目是否合法
+     *
      * @param question 题目信息
-     * @param add 是否是创建操作
+     * @param add      是否是创建操作
      */
     @Override
     public void validQuestion(Question question, boolean add) {
@@ -125,9 +127,9 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
         Long userId = question.getUserId();
         User user = null;
         if (userId != null && userId > 0) {
-            user = userService.getById(userId);
+            user = userFeignClient.getById(userId);
         }
-        UserVO userVO = userService.getUserVO(user);
+        UserVO userVO = userFeignClient.getUserVO(user);
         questionVO.setUserVO(userVO);
         return questionVO;
     }
@@ -143,7 +145,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
         // 1.1 获取所有题目的创建者id集合
         Set<Long> userIdSet = questionList.stream().map(Question::getUserId).collect(Collectors.toSet());
         // 1.2 根据用户id获取用户数据 用户id => 用户数据
-        Map<Long, List<User>> userIdUserListMap = userService.listByIds(userIdSet).stream()
+        Map<Long, List<User>> userIdUserListMap = userFeignClient.listByIds(userIdSet).stream()
                 .collect(Collectors.groupingBy(User::getId));
         // 1.3 填充信息脱敏
         List<QuestionVO> questionVOList = questionList.stream().map(question -> {
@@ -153,7 +155,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question>
             if (userIdUserListMap.containsKey(userId)) {
                 user = userIdUserListMap.get(userId).get(0);
             }
-            questionVO.setUserVO(userService.getUserVO(user));
+            questionVO.setUserVO(userFeignClient.getUserVO(user));
             return questionVO;
         }).collect(Collectors.toList());
         questionVOPage.setRecords(questionVOList);
