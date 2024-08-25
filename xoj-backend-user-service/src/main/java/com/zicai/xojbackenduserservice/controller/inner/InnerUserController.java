@@ -4,6 +4,7 @@ import com.zicai.xojbackendmodel.model.entity.User;
 import com.zicai.xojbackendserviceclient.service.UserFeignClient;
 import com.zicai.xojbackenduserservice.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +15,8 @@ import java.util.List;
 /**
  * 服务内部调用接口实现类
  */
-@RestController("/inner")
+@RestController
+@RequestMapping("/inner")
 public class InnerUserController implements UserFeignClient {
 
     @Resource

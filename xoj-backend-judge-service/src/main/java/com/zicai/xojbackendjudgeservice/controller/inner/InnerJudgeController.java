@@ -4,12 +4,14 @@ import com.zicai.xojbackendjudgeservice.judge.JudgeService;
 import com.zicai.xojbackendmodel.model.entity.QuestionSubmit;
 import com.zicai.xojbackendserviceclient.service.JudgeFeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
-@RestController("/inner")
+@RestController
+@RequestMapping("/inner")
 public class InnerJudgeController implements JudgeFeignClient {
 
     @Resource
