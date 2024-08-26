@@ -23,3 +23,11 @@ spring:
         web-application-type: reactive
 server:
     port: 8101
+
+knife4j:
+    gateway:
+        enabled: true
+        strategy: discover
+        discover:
+            version: swagger2
+            enabled: true
