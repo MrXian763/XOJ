@@ -17,6 +17,7 @@ import com.zicai.xojbackendmodel.model.enums.QuestionSubmitLanguageEnum;
 import com.zicai.xojbackendmodel.model.enums.QuestionSubmitStatusEnum;
 import com.zicai.xojbackendmodel.model.vo.QuestionSubmitVO;
 import com.zicai.xojbackendquestionservice.mapper.QuestionSubmitMapper;
+import com.zicai.xojbackendquestionservice.rabbitmq.MyMessageProducer;
 import com.zicai.xojbackendquestionservice.service.QuestionService;
 import com.zicai.xojbackendquestionservice.service.QuestionSubmitService;
 import com.zicai.xojbackendserviceclient.service.JudgeFeignClient;
@@ -29,7 +30,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -51,6 +51,8 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     @Lazy
     private JudgeFeignClient judgeFeignClient;
 
+    @Resource
+    private MyMessageProducer myMessageProducer;
 
     @Override
     public long doQuestionSubmit(QuestionSubmitAddRequest questionSubmitAddRequest, User loginUser) {
@@ -84,10 +86,8 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
 
         Long questionSubmitId = questionSubmit.getId();
         // 异步执行判题服务
-        CompletableFuture.runAsync(() -> {
-            judgeFeignClient.doJudge(questionSubmitId);
-        });
-        return questionSubmit.getId();
+        myMessageProducer.sendMessage("code_exchange", "my_routingKey", String.valueOf(questionSubmitId));
+        return questionSubmitId;
     }
 
     @Override
