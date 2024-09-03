@@ -1,6 +1,7 @@
 package com.zicai.xojbackendmodel.model.vo;
 
 import cn.hutool.json.JSONUtil;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zicai.xojbackendmodel.model.codesandbox.JudgeInfo;
 import com.zicai.xojbackendmodel.model.entity.QuestionSubmit;
 import lombok.Data;
@@ -54,11 +55,13 @@ public class QuestionSubmitVO implements Serializable {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     /**
      * 更新时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
     /**
