@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zicai.xojbackendquestionservice.mapper.SolutionDetailsMapper">
+
+    <resultMap id="BaseResultMap" type="com.zicai.xojbackendmodel.model.entity.SolutionDetails">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="userId" jdbcType="INTEGER"/>
+        <result property="problemId" column="problemId" jdbcType="INTEGER"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="codeLanguage" column="codeLanguage" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="likesCount" column="likesCount" jdbcType="INTEGER"/>
+        <result property="favoritesCount" column="favoritesCount" jdbcType="INTEGER"/>
+        <result property="commentsCount" column="commentsCount" jdbcType="INTEGER"/>
+        <result property="viewsCount" column="viewsCount" jdbcType="INTEGER"/>
+        <result property="publishTime" column="publishTime" jdbcType="TIMESTAMP"/>
+        <result property="modifyTime" column="modifyTime" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="isDeleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,userId,problemId,
+        code,codeLanguage,content,
+        likesCount,favoritesCount,commentsCount,
+        viewsCount,publishTime,modifyTime,
+        isDeleted
+    </sql>
+</mapper>
