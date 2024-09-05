@@ -7,6 +7,7 @@ import com.zicai.xojbackendcommon.exception.BusinessException;
 import com.zicai.xojbackendmodel.model.dto.question.solutionDetails.SolutionDetailsAddDTO;
 import com.zicai.xojbackendmodel.model.dto.question.solutionDetails.SolutionDetailsUpdateDTO;
 import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsUpdateVO;
+import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsVO;
 import com.zicai.xojbackendquestionservice.service.QuestionSolutionDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 题解接口
+ *
  * @author zicai
  * @date 2024/9/3
  */
@@ -29,6 +31,7 @@ public class QuestionSolutionDetailsController {
 
     /**
      * 创建题解
+     *
      * @param solutionDetailsAddDTO 题解信息
      * @return 创建结果
      */
@@ -40,6 +43,7 @@ public class QuestionSolutionDetailsController {
 
     /**
      * 删除题解
+     *
      * @param id 题解 id
      * @return 删除结果
      */
@@ -54,6 +58,7 @@ public class QuestionSolutionDetailsController {
 
     /**
      * 更新题解
+     *
      * @param solutionDetailsUpdateDTO 题解信息
      * @return 更新结果
      */
@@ -61,5 +66,19 @@ public class QuestionSolutionDetailsController {
     public BaseResponse<SolutionDetailsUpdateVO> updateSolutionDetails(@RequestBody SolutionDetailsUpdateDTO solutionDetailsUpdateDTO) {
         SolutionDetailsUpdateVO solutionDetailsUpdateVO = questionSolutionDetailsService.updateSolutionDetails(solutionDetailsUpdateDTO);
         return ResultUtils.success(solutionDetailsUpdateVO);
+    }
+
+    /**
+     * 根据 id 获取题解
+     * @param id 题解 id
+     * @return 单条题解
+     */
+    @GetMapping("/get")
+    public BaseResponse<SolutionDetailsVO> getSolutionDetailsById(@RequestParam Long id) {
+        if (id == null || id <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        SolutionDetailsVO solutionDetailsVO = questionSolutionDetailsService.getSolutionDetailsById(id);
+        return ResultUtils.success(solutionDetailsVO);
     }
 }

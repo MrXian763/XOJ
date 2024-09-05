@@ -5,6 +5,7 @@ import com.zicai.xojbackendmodel.model.dto.question.solutionDetails.SolutionDeta
 import com.zicai.xojbackendmodel.model.dto.question.solutionDetails.SolutionDetailsUpdateDTO;
 import com.zicai.xojbackendmodel.model.entity.SolutionDetails;
 import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsUpdateVO;
+import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsVO;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,4 +29,11 @@ public interface QuestionSolutionDetailsService extends IService<SolutionDetails
      * @return 更新结果
      */
     SolutionDetailsUpdateVO updateSolutionDetails(SolutionDetailsUpdateDTO solutionDetailsUpdateDTO);
+
+    /**
+     * 根据 id 获取题解
+     * @param id 题解 id
+     * @return 单条题解
+     */
+    SolutionDetailsVO getSolutionDetailsById(long id);
 }

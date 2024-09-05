@@ -9,6 +9,7 @@ import com.zicai.xojbackendmodel.model.entity.Question;
 import com.zicai.xojbackendmodel.model.entity.SolutionDetails;
 import com.zicai.xojbackendmodel.model.entity.User;
 import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsUpdateVO;
+import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsVO;
 import com.zicai.xojbackendquestionservice.mapper.SolutionDetailsMapper;
 import com.zicai.xojbackendquestionservice.service.QuestionSolutionDetailsService;
 import com.zicai.xojbackendserviceclient.service.QuestionFeignClient;
@@ -78,11 +79,23 @@ public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<Solu
         boolean updateResult = this.updateById(newSolutionDetails);
         // 返回数据
         if (!updateResult) { // 更新失败返回旧数据
-            return this.getSolutionDetailsVO(oldSolutionDetails);
+            return this.getSolutionDetailsUpdateVO(oldSolutionDetails);
         }
         newSolutionDetails.setUserId(oldSolutionDetails.getUserId());
         newSolutionDetails.setProblemId(oldSolutionDetails.getProblemId());
-        return this.getSolutionDetailsVO(newSolutionDetails);
+        return this.getSolutionDetailsUpdateVO(newSolutionDetails);
+    }
+
+    @Override
+    public SolutionDetailsVO getSolutionDetailsById(long id) {
+        if (id <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        SolutionDetails solutionDetails = this.getById(id);
+        if (solutionDetails == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "题解不存在");
+        }
+        return this.getSolutionDetailsVO(solutionDetails);
     }
 
     /**
@@ -90,10 +103,21 @@ public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<Solu
      * @param solutionDetails 原始数据
      * @return 封装后的对象
      */
-    private SolutionDetailsUpdateVO getSolutionDetailsVO(SolutionDetails solutionDetails) {
+    private SolutionDetailsUpdateVO getSolutionDetailsUpdateVO(SolutionDetails solutionDetails) {
         SolutionDetailsUpdateVO solutionDetailsUpdateVO = new SolutionDetailsUpdateVO();
         BeanUtils.copyProperties(solutionDetails, solutionDetailsUpdateVO);
         return solutionDetailsUpdateVO;
+    }
+
+    /**
+     * 封装返回对象
+     * @param solutionDetails 原始数据
+     * @return 封装后的对象
+     */
+    private SolutionDetailsVO getSolutionDetailsVO(SolutionDetails solutionDetails) {
+        SolutionDetailsVO solutionDetailsVO = new SolutionDetailsVO();
+        BeanUtils.copyProperties(solutionDetails, solutionDetailsVO);
+        return solutionDetailsVO;
     }
 }
 
