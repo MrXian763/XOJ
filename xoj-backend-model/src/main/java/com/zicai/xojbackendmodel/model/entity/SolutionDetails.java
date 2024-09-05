@@ -20,7 +20,7 @@ public class SolutionDetails implements Serializable {
      * 主键 id
      */
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 用户 id

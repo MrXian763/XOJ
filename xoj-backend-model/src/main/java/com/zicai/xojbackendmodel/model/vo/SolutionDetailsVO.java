@@ -1,19 +1,20 @@
-package com.zicai.xojbackendmodel.model.dto.question.solutionDetails;
+package com.zicai.xojbackendmodel.model.vo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
- * 创建题解请求体
+ * 题解响应体
  * @author zicai
  * @date 2024-09-5
  */
 @TableName(value ="solution_details")
 @Data
-public class SolutionDetailsDto implements Serializable {
+public class SolutionDetailsVO implements Serializable {
 
     /**
      * 用户 id
@@ -39,6 +40,12 @@ public class SolutionDetailsDto implements Serializable {
      * 题解描述
      */
     private String content;
+
+    /**
+     * 发布时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime publishTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
