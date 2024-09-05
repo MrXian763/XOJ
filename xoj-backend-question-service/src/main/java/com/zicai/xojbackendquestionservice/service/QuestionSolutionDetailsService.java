@@ -44,4 +44,11 @@ public interface QuestionSolutionDetailsService extends IService<SolutionDetails
      * @return 题解列表
      */
     List<SolutionDetailsVO> listSolutionDetailsByProblemId(Long problemId);
+
+    /**
+     * 获取当前用登录户创建的题解列表
+     * @param request 当前登录信息
+     * @return 题解列表
+     */
+    List<SolutionDetailsVO> listMySolutionDetails(HttpServletRequest request);
 }

@@ -96,4 +96,15 @@ public class QuestionSolutionDetailsController {
         List<SolutionDetailsVO> solutionDetailsVOList = questionSolutionDetailsService.listSolutionDetailsByProblemId(problemId);
         return ResultUtils.success(solutionDetailsVOList);
     }
+
+    /**
+     * 获取当前用登录户创建的题解列表
+     * @param request 当前登录信息
+     * @return 题解列表
+     */
+    @GetMapping("/list/my")
+    public BaseResponse<List<SolutionDetailsVO>> listMySolutionDetails(HttpServletRequest request) {
+        List<SolutionDetailsVO> solutionDetailsVOList = questionSolutionDetailsService.listMySolutionDetails(request);
+        return ResultUtils.success(solutionDetailsVOList);
+    }
 }

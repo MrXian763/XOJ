@@ -21,17 +21,18 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
-* @author xianzicai
-* @description 针对表【solution_details(题解)】的数据库操作Service实现
-* @createDate 2024-09-03 11:20:47
-*/
+ * @author xianzicai
+ * @description 针对表【solution_details(题解)】的数据库操作Service实现
+ * @createDate 2024-09-03 11:20:47
+ */
 @Service
 public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<SolutionDetailsMapper, SolutionDetails>
-    implements QuestionSolutionDetailsService {
+        implements QuestionSolutionDetailsService {
 
     @Resource
     private SolutionDetailsMapper solutionDetailsMapper;
@@ -120,8 +121,28 @@ public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<Solu
         return solutionDetailsList.stream().map(this::getSolutionDetailsVO).collect(Collectors.toList());
     }
 
+    @Override
+    public List<SolutionDetailsVO> listMySolutionDetails(HttpServletRequest request) {
+        // 获取当前登录用户
+        User loginUser = userFeignClient.getLoginUser(request);
+        if (loginUser == null) {
+            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
+        }
+        // 根据用户 id 查询题解
+        Long loginUserId = loginUser.getId();
+        QueryWrapper<SolutionDetails> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userId", loginUserId);
+        List<SolutionDetails> solutionDetailsList = this.list(queryWrapper);
+        // 返回数据
+        if (solutionDetailsList == null) {
+            return Collections.emptyList();
+        }
+        return solutionDetailsList.stream().map(this::getSolutionDetailsVO).collect(Collectors.toList());
+    }
+
     /**
      * 封装返回对象
+     *
      * @param solutionDetails 原始数据
      * @return 封装后的对象
      */
@@ -133,6 +154,7 @@ public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<Solu
 
     /**
      * 封装返回对象
+     *
      * @param solutionDetails 原始数据
      * @return 封装后的对象
      */
