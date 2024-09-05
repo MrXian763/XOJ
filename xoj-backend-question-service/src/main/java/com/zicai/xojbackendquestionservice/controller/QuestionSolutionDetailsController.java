@@ -107,4 +107,15 @@ public class QuestionSolutionDetailsController {
         List<SolutionDetailsVO> solutionDetailsVOList = questionSolutionDetailsService.listMySolutionDetails(request);
         return ResultUtils.success(solutionDetailsVOList);
     }
+
+    /**
+     * 获取题目的题解数量
+     * @param problemId 题目 id
+     * @return 题目题解数量
+     */
+    @GetMapping("/count")
+    public BaseResponse<Long> countByProblemId(@RequestParam Long problemId) {
+        Long count = questionSolutionDetailsService.countByProblemId(problemId);
+        return ResultUtils.success(count);
+    }
 }

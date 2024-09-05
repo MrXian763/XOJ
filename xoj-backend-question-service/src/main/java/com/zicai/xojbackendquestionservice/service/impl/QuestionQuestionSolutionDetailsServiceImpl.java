@@ -140,6 +140,16 @@ public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<Solu
         return solutionDetailsList.stream().map(this::getSolutionDetailsVO).collect(Collectors.toList());
     }
 
+    @Override
+    public Long countByProblemId(Long problemId) {
+        if (problemId == null || problemId <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        QueryWrapper<SolutionDetails> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("problemId", problemId);
+        return this.count(queryWrapper);
+    }
+
     /**
      * 封装返回对象
      *

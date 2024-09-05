@@ -51,4 +51,11 @@ public interface QuestionSolutionDetailsService extends IService<SolutionDetails
      * @return 题解列表
      */
     List<SolutionDetailsVO> listMySolutionDetails(HttpServletRequest request);
+
+    /**
+     * 获取题目的题解数量
+     * @param problemId 题目 id
+     * @return 题目题解数量
+     */
+    Long countByProblemId(Long problemId);
 }
