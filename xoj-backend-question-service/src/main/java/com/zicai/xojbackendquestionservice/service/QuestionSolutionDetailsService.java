@@ -8,6 +8,7 @@ import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsUpdateV
 import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsVO;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
 * @author xianzicai
@@ -36,4 +37,11 @@ public interface QuestionSolutionDetailsService extends IService<SolutionDetails
      * @return 单条题解
      */
     SolutionDetailsVO getSolutionDetailsById(long id);
+
+    /**
+     * 根据 problemId 获取题解列表
+     * @param problemId 题目 id
+     * @return 题解列表
+     */
+    List<SolutionDetailsVO> listSolutionDetailsByProblemId(Long problemId);
 }

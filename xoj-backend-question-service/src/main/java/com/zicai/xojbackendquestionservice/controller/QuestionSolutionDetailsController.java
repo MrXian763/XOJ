@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 题解接口
@@ -80,5 +81,19 @@ public class QuestionSolutionDetailsController {
         }
         SolutionDetailsVO solutionDetailsVO = questionSolutionDetailsService.getSolutionDetailsById(id);
         return ResultUtils.success(solutionDetailsVO);
+    }
+
+    /**
+     * 根据 problemId 获取题解列表
+     * @param problemId 题目 id
+     * @return 题解列表
+     */
+    @GetMapping("/list/problemId")
+    public BaseResponse<List<SolutionDetailsVO>> listSolutionDetailsByProblemId(@RequestParam Long problemId) {
+        if (problemId == null || problemId <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        List<SolutionDetailsVO> solutionDetailsVOList = questionSolutionDetailsService.listSolutionDetailsByProblemId(problemId);
+        return ResultUtils.success(solutionDetailsVOList);
     }
 }

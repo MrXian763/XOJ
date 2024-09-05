@@ -1,5 +1,6 @@
 package com.zicai.xojbackendquestionservice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zicai.xojbackendcommon.common.ErrorCode;
 import com.zicai.xojbackendcommon.exception.BusinessException;
@@ -19,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
 * @author xianzicai
@@ -96,6 +100,24 @@ public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<Solu
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "题解不存在");
         }
         return this.getSolutionDetailsVO(solutionDetails);
+    }
+
+    @Override
+    public List<SolutionDetailsVO> listSolutionDetailsByProblemId(Long problemId) {
+        if (problemId == null || problemId <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Question question = questionFeignClient.getQuestionById(problemId);
+        if (question == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "题目不存在");
+        }
+        QueryWrapper<SolutionDetails> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("problemId", problemId);
+        List<SolutionDetails> solutionDetailsList = this.list(queryWrapper);
+        if (solutionDetailsList == null) {
+            return new ArrayList<>();
+        }
+        return solutionDetailsList.stream().map(this::getSolutionDetailsVO).collect(Collectors.toList());
     }
 
     /**
