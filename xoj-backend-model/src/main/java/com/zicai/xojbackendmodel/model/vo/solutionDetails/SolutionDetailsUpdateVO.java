@@ -1,4 +1,4 @@
-package com.zicai.xojbackendmodel.model.vo;
+package com.zicai.xojbackendmodel.model.vo.solutionDetails;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -12,9 +12,8 @@ import java.time.LocalDateTime;
  * @author zicai
  * @date 2024-09-5
  */
-@TableName(value ="solution_details")
 @Data
-public class SolutionDetailsVO implements Serializable {
+public class SolutionDetailsUpdateVO implements Serializable {
 
     /**
      * 用户 id

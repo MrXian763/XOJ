@@ -6,7 +6,7 @@ import com.zicai.xojbackendcommon.common.ResultUtils;
 import com.zicai.xojbackendcommon.exception.BusinessException;
 import com.zicai.xojbackendmodel.model.dto.question.solutionDetails.SolutionDetailsAddDTO;
 import com.zicai.xojbackendmodel.model.dto.question.solutionDetails.SolutionDetailsUpdateDTO;
-import com.zicai.xojbackendmodel.model.vo.SolutionDetailsVO;
+import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsUpdateVO;
 import com.zicai.xojbackendquestionservice.service.QuestionSolutionDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -58,8 +58,8 @@ public class QuestionSolutionDetailsController {
      * @return 更新结果
      */
     @PutMapping("/update")
-    public BaseResponse<SolutionDetailsVO> updateSolutionDetails(@RequestBody SolutionDetailsUpdateDTO solutionDetailsUpdateDTO) {
-        SolutionDetailsVO solutionDetailsVO = questionSolutionDetailsService.updateSolutionDetails(solutionDetailsUpdateDTO);
-        return ResultUtils.success(solutionDetailsVO);
+    public BaseResponse<SolutionDetailsUpdateVO> updateSolutionDetails(@RequestBody SolutionDetailsUpdateDTO solutionDetailsUpdateDTO) {
+        SolutionDetailsUpdateVO solutionDetailsUpdateVO = questionSolutionDetailsService.updateSolutionDetails(solutionDetailsUpdateDTO);
+        return ResultUtils.success(solutionDetailsUpdateVO);
     }
 }

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.zicai.xojbackendmodel.model.dto.question.solutionDetails.SolutionDetailsAddDTO;
 import com.zicai.xojbackendmodel.model.dto.question.solutionDetails.SolutionDetailsUpdateDTO;
 import com.zicai.xojbackendmodel.model.entity.SolutionDetails;
-import com.zicai.xojbackendmodel.model.vo.SolutionDetailsVO;
+import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsUpdateVO;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,5 +27,5 @@ public interface QuestionSolutionDetailsService extends IService<SolutionDetails
      * @param solutionDetailsUpdateDTO 题解信息
      * @return 更新结果
      */
-    SolutionDetailsVO updateSolutionDetails(SolutionDetailsUpdateDTO solutionDetailsUpdateDTO);
+    SolutionDetailsUpdateVO updateSolutionDetails(SolutionDetailsUpdateDTO solutionDetailsUpdateDTO);
 }

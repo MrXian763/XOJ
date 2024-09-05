@@ -8,7 +8,7 @@ import com.zicai.xojbackendmodel.model.dto.question.solutionDetails.SolutionDeta
 import com.zicai.xojbackendmodel.model.entity.Question;
 import com.zicai.xojbackendmodel.model.entity.SolutionDetails;
 import com.zicai.xojbackendmodel.model.entity.User;
-import com.zicai.xojbackendmodel.model.vo.SolutionDetailsVO;
+import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsUpdateVO;
 import com.zicai.xojbackendquestionservice.mapper.SolutionDetailsMapper;
 import com.zicai.xojbackendquestionservice.service.QuestionSolutionDetailsService;
 import com.zicai.xojbackendserviceclient.service.QuestionFeignClient;
@@ -59,7 +59,7 @@ public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<Solu
     }
 
     @Override
-    public SolutionDetailsVO updateSolutionDetails(SolutionDetailsUpdateDTO solutionDetailsUpdateDTO) {
+    public SolutionDetailsUpdateVO updateSolutionDetails(SolutionDetailsUpdateDTO solutionDetailsUpdateDTO) {
         // 参数校验
         if (solutionDetailsUpdateDTO == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "请求参数为空");
@@ -90,10 +90,10 @@ public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<Solu
      * @param solutionDetails 原始数据
      * @return 封装后的对象
      */
-    private SolutionDetailsVO getSolutionDetailsVO(SolutionDetails solutionDetails) {
-        SolutionDetailsVO solutionDetailsVO = new SolutionDetailsVO();
-        BeanUtils.copyProperties(solutionDetails, solutionDetailsVO);
-        return solutionDetailsVO;
+    private SolutionDetailsUpdateVO getSolutionDetailsVO(SolutionDetails solutionDetails) {
+        SolutionDetailsUpdateVO solutionDetailsUpdateVO = new SolutionDetailsUpdateVO();
+        BeanUtils.copyProperties(solutionDetails, solutionDetailsUpdateVO);
+        return solutionDetailsUpdateVO;
     }
 }
 
