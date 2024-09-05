@@ -1,6 +1,7 @@
 package com.zicai.xojbackendquestionservice.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zicai.xojbackendmodel.model.dto.question.solutionDetails.SolutionDetailsDto;
 import com.zicai.xojbackendmodel.model.entity.SolutionDetails;
 
 /**
@@ -10,4 +11,10 @@ import com.zicai.xojbackendmodel.model.entity.SolutionDetails;
 */
 public interface QuestionSolutionDetailsService extends IService<SolutionDetails> {
 
+    /**
+     * 创建题解
+     * @param solutionDetailsDto 题解信息
+     * @return 创建结果
+     */
+    String addSolutionDetails(SolutionDetailsDto solutionDetailsDto);
 }

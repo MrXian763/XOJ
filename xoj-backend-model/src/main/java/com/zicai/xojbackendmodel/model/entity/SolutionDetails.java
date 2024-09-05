@@ -28,12 +28,12 @@ public class SolutionDetails implements Serializable {
     /**
      * 用户 id
      */
-    private Integer userId;
+    private Long userId;
 
     /**
      * 题目 id
      */
-    private Integer problemId;
+    private Long problemId;
 
     /**
      * 用户代码

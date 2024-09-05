@@ -87,7 +87,7 @@ CREATE TABLE `question`
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `idx_userId` (`userId` ASC) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1828299505034358787
+  AUTO_INCREMENT = 1828299505034358786
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT = '题目'
   ROW_FORMAT = DYNAMIC;
@@ -112,9 +112,35 @@ CREATE TABLE `question_submit`
     INDEX `idx_postId` (`questionId` ASC) USING BTREE,
     INDEX `idx_userId` (`userId` ASC) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1828304541860868098
+  AUTO_INCREMENT = 1828304541860868097
   CHARACTER SET = utf8mb3
   COLLATE = utf8mb3_general_ci COMMENT = '题目提交'
+  ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for solution_details
+-- ----------------------------
+DROP TABLE IF EXISTS `solution_details`;
+CREATE TABLE `solution_details`
+(
+    `id`             bigint                                                       NOT NULL AUTO_INCREMENT COMMENT '主键 id',
+    `userId`         bigint                                                       NOT NULL COMMENT '用户 id',
+    `problemId`      bigint                                                       NOT NULL COMMENT '题目 id',
+    `code`           text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci        NOT NULL COMMENT '用户代码',
+    `codeLanguage`   varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL     DEFAULT NULL COMMENT '代码语言',
+    `content`        text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci        NULL COMMENT '题解描述',
+    `likesCount`     int                                                          NOT NULL DEFAULT 0 COMMENT '点赞数',
+    `favoritesCount` int                                                          NOT NULL DEFAULT 0 COMMENT '收藏数',
+    `commentsCount`  int                                                          NOT NULL DEFAULT 0 COMMENT '评论数',
+    `viewsCount`     int                                                          NOT NULL DEFAULT 0 COMMENT '查看数',
+    `publishTime`    datetime                                                     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发布时间',
+    `modifyTime`     datetime                                                     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    `isDeleted`      tinyint(1)                                                   NOT NULL DEFAULT 0 COMMENT '是否删除 1-删除',
+    PRIMARY KEY (`id`) USING BTREE,
+    INDEX `idx_userId_problemId` (`userId` ASC, `problemId` ASC) USING BTREE
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT = '题解'
   ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -138,35 +164,9 @@ CREATE TABLE `user`
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `idx_unionId` (`unionId` ASC) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1811011229393649667
+  AUTO_INCREMENT = 1811011229393649666
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT = '用户'
   ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;
-
--- ----------------------------
--- Table structure for solution_details
--- ----------------------------
-DROP TABLE IF EXISTS `solution_details`;
-CREATE TABLE `solution_details`
-(
-    `id`             INT        NOT NULL AUTO_INCREMENT COMMENT '主键 id',
-    `userId`         INT        NOT NULL COMMENT '用户 id',
-    `problemId`      INT        NOT NULL COMMENT '题目 id',
-    `code`           TEXT       NOT NULL COMMENT '用户代码',
-    `codeLanguage`   VARCHAR(50) COMMENT '代码语言',
-    `content`        TEXT COMMENT '题解描述',
-    `likesCount`     INT        NOT NULL DEFAULT 0 COMMENT '点赞数',
-    `favoritesCount` INT        NOT NULL DEFAULT 0 COMMENT '收藏数',
-    `commentsCount`  INT        NOT NULL DEFAULT 0 COMMENT '评论数',
-    `viewsCount`     INT        NOT NULL DEFAULT 0 COMMENT '查看数',
-    `publishTime`    DATETIME   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '发布时间',
-    `modifyTime`     DATETIME   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-    `isDeleted`      TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否删除 1-删除',
-    PRIMARY KEY (`id`),
-    INDEX `idx_userId_problemId` (`userId`, `problemId`)
-) ENGINE = InnoDB
-  CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_unicode_ci COMMENT = '题解'
-  ROW_FORMAT = DYNAMIC;
