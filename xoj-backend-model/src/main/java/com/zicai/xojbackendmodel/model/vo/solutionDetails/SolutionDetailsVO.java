@@ -61,6 +61,16 @@ public class SolutionDetailsVO implements Serializable {
     private Integer viewsCount;
 
     /**
+     * 创建者昵称
+     */
+    private String userNickName;
+
+    /**
+     * 创建者头像
+     */
+    private String userAvatarUrl;
+
+    /**
      * 发布时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

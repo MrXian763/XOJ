@@ -118,7 +118,16 @@ public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<Solu
         if (solutionDetailsList == null) {
             return new ArrayList<>();
         }
-        return solutionDetailsList.stream().map(this::getSolutionDetailsVO).collect(Collectors.toList());
+        List<SolutionDetailsVO> solutionDetailsVOList = solutionDetailsList.stream()
+                .map(this::getSolutionDetailsVO)
+                .collect(Collectors.toList());
+        solutionDetailsVOList.stream().forEach(solutionDetailsVO -> {
+            Long userId = solutionDetailsVO.getUserId();
+            User user = userFeignClient.getById(userId);
+            solutionDetailsVO.setUserNickName(user.getUserName());
+            solutionDetailsVO.setUserAvatarUrl(user.getUserAvatar());
+        });
+        return solutionDetailsVOList;
     }
 
     @Override
