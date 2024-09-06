@@ -136,4 +136,17 @@ public class QuestionSolutionDetailsController {
         return ResultUtils.success(likeResult);
     }
 
+    /**
+     * 收藏题解
+     *
+     * @param id 题解 id
+     * @param isFavorite 是否收藏
+     * @return 收藏结果
+     */
+    @GetMapping("/favorite-count/update")
+    public BaseResponse<String> favoriteSolutionDetails(@RequestParam Long id, Boolean isFavorite, HttpServletRequest request) {
+        String favoriteResult = questionSolutionDetailsService.favoriteSolutionDetails(id, isFavorite, request);
+        return ResultUtils.success(favoriteResult);
+    }
+
 }

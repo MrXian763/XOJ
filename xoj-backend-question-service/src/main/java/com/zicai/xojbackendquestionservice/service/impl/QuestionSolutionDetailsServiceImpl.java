@@ -13,7 +13,8 @@ import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsUpdateV
 import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsVO;
 import com.zicai.xojbackendquestionservice.mapper.SolutionDetailsMapper;
 import com.zicai.xojbackendquestionservice.service.QuestionSolutionDetailsService;
-import com.zicai.xojbackendquestionservice.service.UserSolutionDetailsThumbsService ;
+import com.zicai.xojbackendquestionservice.service.UserSolutionDetailsFavoriteService;
+import com.zicai.xojbackendquestionservice.service.UserSolutionDetailsThumbsService;
 import com.zicai.xojbackendserviceclient.service.QuestionFeignClient;
 import com.zicai.xojbackendserviceclient.service.UserFeignClient;
 import org.springframework.beans.BeanUtils;
@@ -43,6 +44,8 @@ public class QuestionSolutionDetailsServiceImpl extends ServiceImpl<SolutionDeta
     private QuestionFeignClient questionFeignClient;
     @Resource
     private UserSolutionDetailsThumbsService userSolutionDetailsThumbsService;
+    @Resource
+    private UserSolutionDetailsFavoriteService userSolutionDetailsFavoriteService;
 
     @Override
     public String addSolutionDetails(SolutionDetailsAddDTO solutionDetailsAddDTO, HttpServletRequest request) {
@@ -124,12 +127,12 @@ public class QuestionSolutionDetailsServiceImpl extends ServiceImpl<SolutionDeta
         List<SolutionDetailsVO> solutionDetailsVOList = solutionDetailsList.stream()
                 .map(this::getSolutionDetailsVO)
                 .collect(Collectors.toList());
-        solutionDetailsVOList.stream().forEach(solutionDetailsVO -> {
+        solutionDetailsVOList.forEach(solutionDetailsVO -> {
             Long userId = solutionDetailsVO.getUserId();
-            long count = userSolutionDetailsThumbsService.countByUserIdAndSolutionDetailsId(userId, solutionDetailsVO.getId());
-            if (count <= 0) {
-                solutionDetailsVO.setIsLike(false);
-            }
+            long likeCount = userSolutionDetailsThumbsService.countByUserIdAndSolutionDetailsId(userId, solutionDetailsVO.getId());
+            solutionDetailsVO.setIsLike(likeCount > 0);
+            long favoriteCount = userSolutionDetailsFavoriteService.countByUserIdAndSolutionDetailsId(userId, solutionDetailsVO.getId());
+            solutionDetailsVO.setIsFavorite(favoriteCount > 0);
             User user = userFeignClient.getById(userId);
             solutionDetailsVO.setUserNickName(user.getUserName());
             solutionDetailsVO.setUserAvatarUrl(user.getUserAvatar());
@@ -178,17 +181,33 @@ public class QuestionSolutionDetailsServiceImpl extends ServiceImpl<SolutionDeta
         if (loginUser == null) {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
-        // 更新题解点赞数
+        // 更新题解点赞数、更新用户题解点赞表
         if (isLike) {
             solutionDetailsMapper.incLikeCounts(id);
-        } else {
-            solutionDetailsMapper.decLikeCounts(id);
-        }
-        // 更新用户题解点赞表
-        if (isLike) {
             userSolutionDetailsThumbsService.addLikeRecord(id, loginUser.getId());
         } else {
+            solutionDetailsMapper.decLikeCounts(id);
             userSolutionDetailsThumbsService.removeLikeRecord(id, loginUser.getId());
+        }
+        return "操作成功";
+    }
+
+    @Override
+    public String favoriteSolutionDetails(Long id, Boolean isFavorite, HttpServletRequest request) {
+        if (id == null || id <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User loginUser = userFeignClient.getLoginUser(request);
+        if (loginUser == null) {
+            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
+        }
+        // 更新题解收藏数、更新用户题解收藏表
+        if (isFavorite) {
+            solutionDetailsMapper.incFavoriteCounts(id);
+            userSolutionDetailsFavoriteService.addFavoriteRecord(id, loginUser.getId());
+        } else {
+            solutionDetailsMapper.decFavoriteCounts(id);
+            userSolutionDetailsFavoriteService.removeFavoriteRecord(id, loginUser.getId());
         }
         return "操作成功";
     }

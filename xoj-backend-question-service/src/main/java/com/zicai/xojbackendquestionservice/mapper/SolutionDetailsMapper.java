@@ -14,6 +14,10 @@ public interface SolutionDetailsMapper extends BaseMapper<SolutionDetails> {
     void incLikeCounts(Long id);
 
     void decLikeCounts(Long id);
+
+    void incFavoriteCounts(Long id);
+
+    void decFavoriteCounts(Long id);
 }
 
 

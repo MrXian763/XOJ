@@ -68,4 +68,12 @@ public interface QuestionSolutionDetailsService extends IService<SolutionDetails
      */
     String likeSolutionDetails(Long id, Boolean isLike, HttpServletRequest request);
 
+    /**
+     * 收藏题解
+     *
+     * @param id 题解 id
+     * @param isFavorite 是否收藏
+     * @return 收藏结果
+     */
+    String favoriteSolutionDetails(Long id, Boolean isFavorite, HttpServletRequest request);
 }

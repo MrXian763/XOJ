@@ -81,6 +81,11 @@ public class SolutionDetailsVO implements Serializable {
     private Boolean isLike;
 
     /**
+     * 当前用户是否收藏
+     */
+    private Boolean isFavorite;
+
+    /**
      * 发布时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

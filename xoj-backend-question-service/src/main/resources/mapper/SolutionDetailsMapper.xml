@@ -40,4 +40,16 @@
         set likesCount = likesCount - 1
         where id = #{id}
     </update>
+
+    <update id="incFavoriteCounts" parameterType="java.lang.Long">
+        update solution_details
+        set favoritesCount = favoritesCount + 1
+        where id = #{id}
+    </update>
+
+    <update id="decFavoriteCounts" parameterType="java.lang.Long">
+        update solution_details
+        set favoritesCount = favoritesCount - 1
+        where id = #{id}
+    </update>
 </mapper>
