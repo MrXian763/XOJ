@@ -126,6 +126,9 @@ public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<Solu
             User user = userFeignClient.getById(userId);
             solutionDetailsVO.setUserNickName(user.getUserName());
             solutionDetailsVO.setUserAvatarUrl(user.getUserAvatar());
+            if (solutionDetailsVO.getContent() == null || solutionDetailsVO.getContent().trim().isEmpty()) {
+                solutionDetailsVO.setContent("该用户暂未填写思路");
+            }
         });
         return solutionDetailsVOList;
     }
