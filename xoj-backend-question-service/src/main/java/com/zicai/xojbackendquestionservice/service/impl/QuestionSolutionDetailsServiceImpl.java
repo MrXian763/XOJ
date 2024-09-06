@@ -13,6 +13,7 @@ import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsUpdateV
 import com.zicai.xojbackendmodel.model.vo.solutionDetails.SolutionDetailsVO;
 import com.zicai.xojbackendquestionservice.mapper.SolutionDetailsMapper;
 import com.zicai.xojbackendquestionservice.service.QuestionSolutionDetailsService;
+import com.zicai.xojbackendquestionservice.service.UserSolutionDetailsThumbsService ;
 import com.zicai.xojbackendserviceclient.service.QuestionFeignClient;
 import com.zicai.xojbackendserviceclient.service.UserFeignClient;
 import org.springframework.beans.BeanUtils;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
  * @createDate 2024-09-03 11:20:47
  */
 @Service
-public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<SolutionDetailsMapper, SolutionDetails>
+public class QuestionSolutionDetailsServiceImpl extends ServiceImpl<SolutionDetailsMapper, SolutionDetails>
         implements QuestionSolutionDetailsService {
 
     @Resource
@@ -40,6 +41,8 @@ public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<Solu
     private UserFeignClient userFeignClient;
     @Resource
     private QuestionFeignClient questionFeignClient;
+    @Resource
+    private UserSolutionDetailsThumbsService userSolutionDetailsThumbsService;
 
     @Override
     public String addSolutionDetails(SolutionDetailsAddDTO solutionDetailsAddDTO, HttpServletRequest request) {
@@ -123,6 +126,10 @@ public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<Solu
                 .collect(Collectors.toList());
         solutionDetailsVOList.stream().forEach(solutionDetailsVO -> {
             Long userId = solutionDetailsVO.getUserId();
+            long count = userSolutionDetailsThumbsService.countByUserIdAndSolutionDetailsId(userId, solutionDetailsVO.getId());
+            if (count <= 0) {
+                solutionDetailsVO.setIsLike(false);
+            }
             User user = userFeignClient.getById(userId);
             solutionDetailsVO.setUserNickName(user.getUserName());
             solutionDetailsVO.setUserAvatarUrl(user.getUserAvatar());
@@ -160,6 +167,30 @@ public class QuestionQuestionSolutionDetailsServiceImpl extends ServiceImpl<Solu
         QueryWrapper<SolutionDetails> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("problemId", problemId);
         return this.count(queryWrapper);
+    }
+
+    @Override
+    public String likeSolutionDetails(Long id, Boolean isLike, HttpServletRequest request) {
+        if (id == null || id <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User loginUser = userFeignClient.getLoginUser(request);
+        if (loginUser == null) {
+            throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
+        }
+        // 更新题解点赞数
+        if (isLike) {
+            solutionDetailsMapper.incLikeCounts(id);
+        } else {
+            solutionDetailsMapper.decLikeCounts(id);
+        }
+        // 更新用户题解点赞表
+        if (isLike) {
+            userSolutionDetailsThumbsService.addLikeRecord(id, loginUser.getId());
+        } else {
+            userSolutionDetailsThumbsService.removeLikeRecord(id, loginUser.getId());
+        }
+        return "操作成功";
     }
 
     /**

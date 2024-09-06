@@ -28,4 +28,16 @@
         viewsCount,publishTime,modifyTime,
         isDeleted
     </sql>
+
+    <update id="incLikeCounts" parameterType="java.lang.Long">
+        update solution_details
+        set likesCount = likesCount + 1
+        where id = #{id}
+    </update>
+
+    <update id="decLikeCounts" parameterType="java.lang.Long">
+        update solution_details
+        set likesCount = likesCount - 1
+        where id = #{id}
+    </update>
 </mapper>

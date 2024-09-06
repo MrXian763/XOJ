@@ -16,6 +16,11 @@ import java.time.LocalDateTime;
 public class SolutionDetailsVO implements Serializable {
 
     /**
+     * id
+     */
+    private Long id;
+
+    /**
      * 用户 id
      */
     private Long userId;
@@ -69,6 +74,11 @@ public class SolutionDetailsVO implements Serializable {
      * 创建者头像
      */
     private String userAvatarUrl;
+
+    /**
+     * 当前用户是否点赞
+     */
+    private Boolean isLike;
 
     /**
      * 发布时间

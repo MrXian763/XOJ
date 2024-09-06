@@ -58,4 +58,14 @@ public interface QuestionSolutionDetailsService extends IService<SolutionDetails
      * @return 题目题解数量
      */
     Long countByProblemId(Long problemId);
+
+    /**
+     * 点赞题解
+     *
+     * @param id 题解 id
+     * @param isLike 是否点赞
+     * @return 点赞结果
+     */
+    String likeSolutionDetails(Long id, Boolean isLike, HttpServletRequest request);
+
 }

@@ -169,4 +169,20 @@ CREATE TABLE `user`
   COLLATE = utf8mb4_unicode_ci COMMENT = '用户'
   ROW_FORMAT = DYNAMIC;
 
+-- ----------------------------
+-- Table structure for user_solution_details_thumbs
+-- ----------------------------
+DROP TABLE IF EXISTS `user_solution_details_thumbs`;
+CREATE TABLE `user_solution_details_thumbs`
+(
+    `id`                bigint     NOT NULL AUTO_INCREMENT COMMENT '主键 id',
+    `userId`            bigint     NOT NULL COMMENT '用户 id',
+    `solutionDetailsId` bigint     NOT NULL COMMENT '题解 id',
+    `isDeleted`         tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除 1-删除',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT = '用户题解点赞'
+  ROW_FORMAT = DYNAMIC;
+
 SET FOREIGN_KEY_CHECKS = 1;

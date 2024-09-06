@@ -11,6 +11,9 @@ import com.zicai.xojbackendmodel.model.entity.SolutionDetails;
 */
 public interface SolutionDetailsMapper extends BaseMapper<SolutionDetails> {
 
+    void incLikeCounts(Long id);
+
+    void decLikeCounts(Long id);
 }
 
 

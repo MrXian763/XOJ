@@ -71,6 +71,7 @@ public class QuestionSolutionDetailsController {
 
     /**
      * 根据 id 获取题解
+     *
      * @param id 题解 id
      * @return 单条题解
      */
@@ -85,6 +86,7 @@ public class QuestionSolutionDetailsController {
 
     /**
      * 根据 problemId 获取题解列表
+     *
      * @param problemId 题目 id
      * @return 题解列表
      */
@@ -99,6 +101,7 @@ public class QuestionSolutionDetailsController {
 
     /**
      * 获取当前用登录户创建的题解列表
+     *
      * @param request 当前登录信息
      * @return 题解列表
      */
@@ -110,6 +113,7 @@ public class QuestionSolutionDetailsController {
 
     /**
      * 获取题目的题解数量
+     *
      * @param problemId 题目 id
      * @return 题目题解数量
      */
@@ -119,5 +123,17 @@ public class QuestionSolutionDetailsController {
         return ResultUtils.success(count);
     }
 
+    /**
+     * 点赞题解
+     *
+     * @param id 题解 id
+     * @param isLike 是否点赞
+     * @return 点赞结果
+     */
+    @GetMapping("/like-count/update")
+    public BaseResponse<String> likeSolutionDetails(@RequestParam Long id, Boolean isLike, HttpServletRequest request) {
+        String likeResult = questionSolutionDetailsService.likeSolutionDetails(id, isLike, request);
+        return ResultUtils.success(likeResult);
+    }
 
 }
