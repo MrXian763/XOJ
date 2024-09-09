@@ -14,6 +14,7 @@ import com.zicai.xojbackendmodel.model.entity.User;
 import com.zicai.xojbackendmodel.model.vo.LoginUserVO;
 import com.zicai.xojbackendmodel.model.vo.UserVO;
 import com.zicai.xojbackenduserservice.service.UserService;
+import com.zicai.xojbackenduserservice.service.FollowRelationshipService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -36,6 +37,8 @@ public class UserController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private FollowRelationshipService followRelationshipService;
 
     /**
      * 用户注册
@@ -105,10 +108,6 @@ public class UserController {
         User user = userService.getLoginUser(request);
         return ResultUtils.success(userService.getLoginUserVO(user));
     }
-
-    // endregion
-
-    // region 增删改查
 
     /**
      * 创建用户
@@ -269,5 +268,18 @@ public class UserController {
         boolean result = userService.updateById(user);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(true);
+    }
+
+    /**
+     * 关注、取关用户
+     *
+     * @param followerId 被关注者 id
+     * @param isFollow   true-关注; false-取关操作
+     * @param request    请求信息
+     * @return 结果
+     */
+    @GetMapping("/follower/do")
+    public BaseResponse<String> doFollow(@RequestParam Long followerId, Boolean isFollow, HttpServletRequest request) {
+        return ResultUtils.success(followRelationshipService.doFollow(followerId, isFollow, request));
     }
 }

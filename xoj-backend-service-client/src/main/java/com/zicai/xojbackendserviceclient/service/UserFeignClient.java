@@ -1,5 +1,6 @@
 package com.zicai.xojbackendserviceclient.service;
 
+import com.zicai.xojbackendcommon.common.BaseResponse;
 import com.zicai.xojbackendcommon.common.ErrorCode;
 import com.zicai.xojbackendcommon.exception.BusinessException;
 import com.zicai.xojbackendmodel.model.entity.User;
@@ -24,6 +25,7 @@ public interface UserFeignClient {
 
     /**
      * 根据id获取用户
+     *
      * @param userId 用户id
      * @return
      */
@@ -32,11 +34,23 @@ public interface UserFeignClient {
 
     /**
      * 根据id列表获取用户列表
+     *
      * @param idList id列表
      * @return
      */
     @GetMapping("/get/ids")
     List<User> listByIds(@RequestParam("idList") Collection<Long> idList);
+
+    /**
+     * 关注、取关用户
+     *
+     * @param followerId 被关注者 id
+     * @param isFollow   true-关注; false-取关操作
+     * @param request    请求信息
+     * @return 结果
+     */
+    @GetMapping("/follower/do")
+    BaseResponse<String> doFollow(@RequestParam Long followerId, Boolean isFollow, HttpServletRequest request);
 
     /**
      * 获取当前登录用户

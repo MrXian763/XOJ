@@ -185,4 +185,21 @@ CREATE TABLE `user_solution_details_thumbs`
   COLLATE = utf8mb4_unicode_ci COMMENT = '用户题解点赞'
   ROW_FORMAT = DYNAMIC;
 
+-- ----------------------------
+-- Table structure for follow_relationship
+-- ----------------------------
+DROP TABLE IF EXISTS `follow_relationship`;
+CREATE TABLE `follow_relationship`
+(
+    `id`         bigint     NOT NULL AUTO_INCREMENT COMMENT '主键 id',
+    `followerId` bigint     NOT NULL COMMENT '关注者 id',
+    `followedId` bigint     NOT NULL COMMENT '被关注者 id',
+    `createTime` datetime   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '关注时间',
+    `isDeleted`  tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除 1-删除',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT = '用户关注粉丝'
+  ROW_FORMAT = DYNAMIC;
+
 SET FOREIGN_KEY_CHECKS = 1;
